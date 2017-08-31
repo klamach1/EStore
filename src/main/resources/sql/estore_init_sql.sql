@@ -43,7 +43,6 @@ create table estore.product_order
 product_order_id INT NOT NULL AUTO_INCREMENT,
 order_id int not null,
 product_id int not null,
-sku varchar(256) NOT NULL,
 order_amount int not null,
 PRIMARY KEY (product_order_id),
 FOREIGN KEY (order_id) REFERENCES estore.order (order_id),
