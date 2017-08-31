@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/data/jpa 
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <context:component-scan base-package="com.uciext" />
+        <!-- enables scanning for @Transactional annotations -->
+    <tx:annotation-driven/>
+    
+    <bean id="catalogService" scope="singleton"
+    	class="com.uciext.springfw.hw.catalog.services.impl.CatalogServiceImpl">
+    </bean>
+    <bean id="entityManagerFactory"
+    	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="estoreDS" />
+    <property name="jpaVendorAdapter">
+        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+    </property>
+    <property name="jpaProperties">
+        <props>
+            <prop key="hibernate.hbm2ddl.auto">none</prop>
+            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            <prop key="hibernate.jdbc.time_zone">UTC</prop>
+        </props>
+    </property>
+
+            <property name="packagesToScan" value="com.uciext.springfw.hw.catalog" />
+        </bean>
+    <bean id="transactionManager"
+    	class="org.springframework.orm.jpa.JpaTransactionManager"
+    	p:entityManagerFactory-ref="entityManagerFactory" />
+    <bean
+    	class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+    <jpa:repositories base-package="com.uciext.springfw.hw.catalog.dao"/>
+
+    
+
+    
+
+    
+    
+            <!-- JPA EntityManagerFactory -->
+        
+        
+                <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
+        
+
+
+        <!--
+            Post-processor to perform exception translation on @Repository classes (from native
+            exceptions such as JPA PersistenceExceptions to Spring's DataAccessException hierarchy).
+        -->
+        
+        
+
+</beans>
