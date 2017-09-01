@@ -3,7 +3,7 @@ create database estore;
 grant all privileges on estore.* to estore;
 */
 DROP TABLE IF EXISTS estore.product_order CASCADE;
-DROP TABLE IF EXISTS estore.order CASCADE;
+DROP TABLE IF EXISTS estore.order_data CASCADE;
 DROP TABLE IF EXISTS estore.catalog CASCADE;
 DROP TABLE IF EXISTS estore.products CASCADE;
 
@@ -28,7 +28,7 @@ FOREIGN KEY (catalog_id) REFERENCES estore.catalog (catalog_id)
 
 
 
-create table estore.order
+create table estore.order_data
 (
   order_id        INT          NOT NULL AUTO_INCREMENT,
   order_created datetime NOT NULL,
@@ -45,6 +45,6 @@ order_id int not null,
 product_id int not null,
 order_amount int not null,
 PRIMARY KEY (product_order_id),
-FOREIGN KEY (order_id) REFERENCES estore.order (order_id),
+FOREIGN KEY (order_id) REFERENCES estore.order_data (order_id),
 FOREIGN KEY (product_id) REFERENCES estore.product (product_id)
 );

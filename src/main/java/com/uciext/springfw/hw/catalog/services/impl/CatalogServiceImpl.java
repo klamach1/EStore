@@ -1,8 +1,10 @@
 package com.uciext.springfw.hw.catalog.services.impl;
 
 import com.uciext.springfw.hw.catalog.dao.CatalogDao;
+import com.uciext.springfw.hw.catalog.dao.OrderDao;
 import com.uciext.springfw.hw.catalog.dao.ProductDao;
 import com.uciext.springfw.hw.catalog.model.Catalog;
+import com.uciext.springfw.hw.catalog.model.Order;
 import com.uciext.springfw.hw.catalog.model.Product;
 import com.uciext.springfw.hw.catalog.services.CatalogService;
 import com.uciext.springfw.hw.catalog.services.CatalogServiceException;
@@ -31,12 +33,18 @@ public class CatalogServiceImpl implements CatalogService{
         this.productDao = productDao;
     }
 
+    private OrderDao orderDao;
+    public void setOrderDao(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
+
 
     @Autowired
-    public CatalogServiceImpl(CatalogDao catalogDao, ProductDao productDao) {
+    public CatalogServiceImpl(CatalogDao catalogDao, ProductDao productDao, OrderDao orderDao) {
     	logger.info("In CatalogServiceImpl()");
     	this.catalogDao = catalogDao;
     	this.productDao = productDao;
+    	this.orderDao = orderDao;
     	
     }
     
@@ -125,6 +133,33 @@ logger.info("Deleting " + product.toString());
 
     }
 
+    @Override
+    public List<Product> getProductsInStockByCatalog(Catalog catalog) {
+        return null;
+    }
 
+    @Override
+    public List<Order> getOrders() {
+        return null;
+    }
 
+    @Override
+    public Order getOrderById(int orderid) {
+        return null;
+    }
+
+    @Override
+    public List<Order> getOrdersByUser(String user) {
+        return orderDao.findOrdersByUser(user);
+    }
+
+    @Override
+    public void addOrder(Order order) {
+
+    }
+
+    @Override
+    public void completeOrder(Order order) {
+
+    }
 }

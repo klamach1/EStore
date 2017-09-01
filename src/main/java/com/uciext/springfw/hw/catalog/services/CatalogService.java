@@ -1,6 +1,7 @@
 package com.uciext.springfw.hw.catalog.services;
 
 import com.uciext.springfw.hw.catalog.model.Catalog;
+import com.uciext.springfw.hw.catalog.model.Order;
 import com.uciext.springfw.hw.catalog.model.Product;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface CatalogService {
 
     public List<Product> getProducts();
 
+    public List<Product> getProductsInStockByCatalog(Catalog catalog);
+
     public List<Product> getProductsByCatalog(Catalog catalog);
 
     public Product getProduct(int productId);
@@ -25,5 +28,17 @@ public interface CatalogService {
     public void updateProduct(Product product) throws CatalogServiceException;
 
     public void deleteProduct(Product product) throws CatalogServiceException;
+
+    public List<Order> getOrders();
+
+    public Order getOrderById(int orderid);
+
+    public List<Order> getOrdersByUser(String user);
+
+    public void addOrder(Order order);
+
+    public void completeOrder(Order order);
+
+
 
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "order")
-@Table(name = "order")
+@Table(name = "order_data")
 public class Order {
 
     @Id
@@ -29,7 +29,11 @@ public class Order {
 
     @Column(name = "confirm_number")
     @XmlElement
-    private int confirmNumber;
+    private Integer confirmNumber;
+
+    @Column(name = "user")
+    @XmlElement
+    private String user;
 
     public int getOrderId() {
         return orderId;
@@ -55,11 +59,19 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public int getConfirmNumber() {
+    public Integer getConfirmNumber() {
         return confirmNumber;
     }
 
-    public void setConfirmNumber(int confirmNumber) {
+    public void setConfirmNumber(Integer confirmNumber) {
         this.confirmNumber = confirmNumber;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
