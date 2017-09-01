@@ -38,4 +38,18 @@ public class UserController {
 
         return new ModelAndView("order/orderList");
     }
+
+    @RequestMapping(value="/addOrder", method= RequestMethod.GET)
+    public ModelAndView addOrder(Model model) {
+        System.out.println("======= in addOrder");
+        Order order = new Order();
+        order.setUser(USER_NAME);
+        Catalog catalog = catalogService.getCatalogs().get(0);
+        List<Product> productList = catalogService.getProductsInStockByCatalog(catalog);
+        model.addAttribute("order", order);
+        model.addAttribute("productList", productList);
+
+
+        return new ModelAndView("order/addOrder");
+    }
 }
