@@ -14,4 +14,5 @@ public interface SpringDataJpaProductDao extends ProductDao, Repository<Product,
     public Product findProductByProductId(int productId);
     public List<Product> findAll();
     public List<Product> findProductByCatalog(Catalog catalog);
+    public List<Product> findProductsByCatalogAndAvailableQuantityGreaterThan(Catalog catalog, int availableQuantity);
 }

@@ -22,6 +22,8 @@ public class ProductOrder {
     @JoinColumn(name = "order_id")
     private Order order;
 
+
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
@@ -29,5 +31,46 @@ public class ProductOrder {
     @Column(name = "order_amount")
     private int orderAmount;
 
-    
+
+    public ProductOrder() {
+    }
+
+    public ProductOrder(Order order, Product product, int orderAmount) {
+
+        this.order = order;
+        this.product = product;
+        this.orderAmount = orderAmount;
+    }
+
+    public int getProductOrderId() {
+        return productOrderId;
+    }
+
+    public void setProductOrderId(int productOrderId) {
+        this.productOrderId = productOrderId;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public int getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(int orderAmount) {
+        this.orderAmount = orderAmount;
+    }
 }

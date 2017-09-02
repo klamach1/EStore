@@ -1,9 +1,7 @@
 package com.uciext.springfw.hw.controllers;
 
 
-import com.uciext.springfw.hw.catalog.model.Catalog;
-import com.uciext.springfw.hw.catalog.model.Order;
-import com.uciext.springfw.hw.catalog.model.Product;
+import com.uciext.springfw.hw.catalog.model.*;
 import com.uciext.springfw.hw.catalog.services.CatalogService;
 import com.uciext.springfw.hw.catalog.services.CatalogServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,22 +32,28 @@ public class UserController {
     public ModelAndView orderList(Model model) {
         System.out.println("======= in orderList");
         List<Order> orders = catalogService.getOrdersByUser(USER_NAME);
+        model.addAttribute("userName", USER_NAME);
         model.addAttribute("orderList", orders);
 
         return new ModelAndView("order/orderList");
     }
 
-    @RequestMapping(value="/addOrder", method= RequestMethod.GET)
-    public ModelAndView addOrder(Model model) {
+    @RequestMapping(value="/{userName}/addOrder", method= RequestMethod.GET)
+    public String addOrder(@PathVariable String userName,  Model model) {
         System.out.println("======= in addOrder");
         Order order = new Order();
-        order.setUser(USER_NAME);
+        order.setUser(userName);
         Catalog catalog = catalogService.getCatalogs().get(0);
         List<Product> productList = catalogService.getProductsInStockByCatalog(catalog);
-        model.addAttribute("order", order);
-        model.addAttribute("productList", productList);
+        ProductOrders productOrders = new ProductOrders();
+        for (Product product : productList) {
+            ProductOrder productOrder = new ProductOrder(order, product, 0);
+            productOrders.getProductOrderList().add(productOrder);
+        }
+        model.addAttribute("productOrders", productOrders);
+        System.out.println("======= before return");
 
 
-        return new ModelAndView("order/addOrder");
+        return "order/addOrder";
     }
 }

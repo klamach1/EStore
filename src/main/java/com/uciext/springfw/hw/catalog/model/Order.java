@@ -1,11 +1,10 @@
 package com.uciext.springfw.hw.catalog.model;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,6 +33,10 @@ public class Order {
     @Column(name = "user")
     @XmlElement
     private String user;
+
+    @XmlTransient
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "order")
+    private List<ProductOrder> productOrderList;
 
     public int getOrderId() {
         return orderId;
@@ -73,5 +76,16 @@ public class Order {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public List<ProductOrder> getProductOrderList() {
+        if (productOrderList == null) {
+            productOrderList = new ArrayList<ProductOrder>();
+        }
+        return productOrderList;
+    }
+
+    public void setProductOrderList(List<ProductOrder> productOrderList) {
+        this.productOrderList = productOrderList;
     }
 }

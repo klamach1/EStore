@@ -135,7 +135,8 @@ logger.info("Deleting " + product.toString());
 
     @Override
     public List<Product> getProductsInStockByCatalog(Catalog catalog) {
-        return null;
+
+        return productDao.findProductsByCatalogAndAvailableQuantityGreaterThan(catalog, 0);
     }
 
     @Override
