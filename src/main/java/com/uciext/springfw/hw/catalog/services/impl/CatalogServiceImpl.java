@@ -155,7 +155,8 @@ logger.info("Deleting " + product.toString());
     }
 
     @Override
-    public void addOrder(Order order) {
+    public Order addOrder(Order order) {
+        return orderDao.saveAndFlush(order);
 
     }
 

@@ -28,14 +28,14 @@ public class Order {
 
     @Column(name = "confirm_number")
     @XmlElement
-    private Integer confirmNumber;
+    private Long confirmNumber;
 
     @Column(name = "user")
     @XmlElement
     private String user;
 
     @XmlTransient
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<ProductOrder> productOrderList;
 
     public int getOrderId() {
@@ -62,11 +62,11 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public Integer getConfirmNumber() {
+    public Long getConfirmNumber() {
         return confirmNumber;
     }
 
-    public void setConfirmNumber(Integer confirmNumber) {
+    public void setConfirmNumber(Long confirmNumber) {
         this.confirmNumber = confirmNumber;
     }
 

@@ -8,9 +8,29 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class ProductOrders {
+public class CustomerOrder {
 
-    List<ProductOrder> productOrderList = new ArrayList<ProductOrder>();
+    Order order;
+
+    List<ProductOrder> productOrderList;
+
+    boolean completedOrder;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public boolean isCompletedOrder() {
+        return completedOrder;
+    }
+
+    public void setCompletedOrder(boolean completedOrder) {
+        this.completedOrder = completedOrder;
+    }
 
     public List<ProductOrder> getProductOrderList() {
         if (productOrderList == null) {

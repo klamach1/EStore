@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface OrderDao {
 
-    public List<Order> findOrdersByUser(String user);
+    List<Order> findOrdersByUser(String user);
+
+    void save(Order order);
+
+    Order saveAndFlush(Order order);
 
 }

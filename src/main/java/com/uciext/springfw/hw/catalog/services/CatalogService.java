@@ -35,7 +35,7 @@ public interface CatalogService {
 
     public List<Order> getOrdersByUser(String user);
 
-    public void addOrder(Order order);
+    public Order addOrder(Order order);
 
     public void completeOrder(Order order);
 
