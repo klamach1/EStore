@@ -162,7 +162,11 @@ logger.info("Deleting " + product.toString());
 
     @Override
     @Transactional
-    public Order addOrder(Order order) {
+    public Order saveOrder(Order order) {
+
+        if (order.getConfirmNumber() == null) {
+            order.setConfirmNumber(0L);
+        }
 
         if (order.getConfirmNumber() > 0) {
             for (ProductOrder productOrder : order.getProductOrderList()) {
@@ -180,9 +184,4 @@ logger.info("Deleting " + product.toString());
 
     }
 
-    @Override
-    @Transactional
-    public void completeOrder(Order order) {
-
-    }
 }

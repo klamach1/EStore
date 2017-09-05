@@ -41,7 +41,7 @@ public class UserController {
 
     @RequestMapping(value="/{userName}/addOrder", method= RequestMethod.GET)
     public String addOrder(@PathVariable String userName,  Model model) {
-        System.out.println("======= in addOrder");
+        System.out.println("======= in saveOrder");
         Order order = new Order();
         order.setUser(userName);
         Catalog catalog = catalogService.getCatalogs().get(0);
@@ -56,20 +56,20 @@ public class UserController {
         System.out.println("======= before return");
 
 
-        return "order/addOrder";
+        return "order/addEditOrder";
     }
 
     @RequestMapping(value="/{userName}/addOrder", method= RequestMethod.POST)
     public String addOrder(@PathVariable String userName,  CustomerOrder customerOrder, BindingResult bindingResult) {
         System.out.println("======= in addOrderPost");
         if(bindingResult.hasErrors()){
-            return "order/addOrder";
+            return "order/addEditOrder";
         }
         Order order = customerOrder.getOrder();
         order.setUser(userName);
         order.setOrderCreated(Date.from(Instant.now()));
         order.setConfirmNumber(0L);
-        order = catalogService.addOrder(order);
+        order = catalogService.saveOrder(order);
         saveOrderItems(order, customerOrder);
         System.out.println("======= after add");
 
@@ -106,14 +106,14 @@ public class UserController {
         System.out.println("======= before return");
 
 
-        return "order/addOrder";
+        return "order/addEditOrder";
     }
 
     @RequestMapping(value="/{userName}/editOrder/{orderId}", method= RequestMethod.POST)
     public String editOrder(@PathVariable String userName, @PathVariable int orderId,  CustomerOrder customerOrder, BindingResult bindingResult) {
         System.out.println("======= in editOrderPost");
         if(bindingResult.hasErrors()){
-            return "order/addOrder";
+            return "order/addEditOrder";
         }
 
         Order order = catalogService.getOrderById(orderId);
@@ -161,7 +161,7 @@ public class UserController {
             order.setConfirmNumber(0L);
         }
         System.out.println("Order Conf Number " + order.getConfirmNumber());
-        order = catalogService.addOrder(order);
+        order = catalogService.saveOrder(order);
 
     }
 }
