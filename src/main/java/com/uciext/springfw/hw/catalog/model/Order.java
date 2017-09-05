@@ -35,7 +35,7 @@ public class Order {
     private String user;
 
     @XmlTransient
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order", orphanRemoval=true)
     private List<ProductOrder> productOrderList;
 
     public int getOrderId() {

@@ -6,6 +6,7 @@ import com.uciext.springfw.hw.catalog.dao.ProductDao;
 import com.uciext.springfw.hw.catalog.model.Catalog;
 import com.uciext.springfw.hw.catalog.model.Order;
 import com.uciext.springfw.hw.catalog.model.Product;
+import com.uciext.springfw.hw.catalog.model.ProductOrder;
 import com.uciext.springfw.hw.catalog.services.CatalogService;
 import com.uciext.springfw.hw.catalog.services.CatalogServiceException;
 import org.apache.log4j.Logger;
@@ -134,6 +135,7 @@ logger.info("Deleting " + product.toString());
     }
 
     @Override
+    @Transactional
     public List<Product> getProductsInStockByCatalog(Catalog catalog) {
 
         return productDao.findProductsByCatalogAndAvailableQuantityGreaterThan(catalog, 0);
@@ -145,22 +147,41 @@ logger.info("Deleting " + product.toString());
     }
 
     @Override
-    public Order getOrderById(int orderid) {
-        return null;
+    @Transactional
+    public Order getOrderById(int orderId) {
+        Order order = orderDao.findOrderByOrderId(orderId);
+        order.getProductOrderList().size();
+        return order;
     }
 
     @Override
+    @Transactional
     public List<Order> getOrdersByUser(String user) {
         return orderDao.findOrdersByUser(user);
     }
 
     @Override
+    @Transactional
     public Order addOrder(Order order) {
+
+        if (order.getConfirmNumber() > 0) {
+            for (ProductOrder productOrder : order.getProductOrderList()) {
+                Product product = getProduct(productOrder.getProduct().getProductId());
+                product.setAvailableQuantity(product.getAvailableQuantity()-productOrder.getOrderAmount());
+                try {
+                    updateProduct(product);
+                } catch (CatalogServiceException cse) {
+
+                }
+
+            }
+        }
         return orderDao.saveAndFlush(order);
 
     }
 
     @Override
+    @Transactional
     public void completeOrder(Order order) {
 
     }

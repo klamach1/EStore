@@ -13,4 +13,6 @@ public interface SpringDataJpaOrderDao extends OrderDao, Repository<Order, Integ
     void save(Order order);
 
     Order saveAndFlush(Order order);
+
+    Order findOrderByOrderId(int orderId);
 }

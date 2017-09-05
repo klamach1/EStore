@@ -15,6 +15,7 @@
 	<%--<c:out value="Products for Sale = ${productOrders.productOrderList.size}"/>--%>
     <sf:hidden path="order.orderId"></sf:hidden>
 	<c:forEach var="productOrder" varStatus="po" items="${customerOrder.productOrderList}">
+        <sf:hidden path="productOrderList[${po.index}].productOrderId"></sf:hidden>
 		<sf:hidden path="productOrderList[${po.index}].order.orderId"></sf:hidden>
 		<sf:hidden path="productOrderList[${po.index}].product.productId"></sf:hidden>
 	<tr>

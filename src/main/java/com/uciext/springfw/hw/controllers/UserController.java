@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
 import java.time.Instant;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -65,11 +65,86 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "order/addOrder";
         }
-        int orderTotal = 0;
         Order order = customerOrder.getOrder();
         order.setUser(userName);
         order.setOrderCreated(Date.from(Instant.now()));
+        order.setConfirmNumber(0L);
         order = catalogService.addOrder(order);
+        saveOrderItems(order, customerOrder);
+        System.out.println("======= after add");
+
+
+        return "redirect:/user/listOrders.html";
+    }
+
+    @RequestMapping(value="/{userName}/editOrder/{orderId}", method= RequestMethod.GET)
+    public String editOrder(@PathVariable String userName, @PathVariable int orderId,  Model model) {
+        System.out.println("======= in editOrder");
+        Order order = catalogService.getOrderById(orderId);
+        List<ProductOrder> productOrderList = order.getProductOrderList();
+
+        order.setUser(userName);
+        Map<Integer, ProductOrder> orderedProductMap = new HashMap<>();
+
+
+        for (ProductOrder productOrder : productOrderList) {
+            orderedProductMap.put(productOrder.getProduct().getProductId(), productOrder);
+        }
+        Catalog catalog = catalogService.getCatalogs().get(0);
+        List<Product> productList = catalogService.getProductsInStockByCatalog(catalog);
+        CustomerOrder customerOrder = new CustomerOrder();
+        customerOrder.setOrder(order);
+
+        for (Product product : productList) {
+            ProductOrder productOrder = orderedProductMap.get(product.getProductId());
+            if (productOrder == null) {
+                productOrder = new ProductOrder(order, product, 0);
+            }
+            customerOrder.getProductOrderList().add(productOrder);
+        }
+        model.addAttribute("customerOrder", customerOrder);
+        System.out.println("======= before return");
+
+
+        return "order/addOrder";
+    }
+
+    @RequestMapping(value="/{userName}/editOrder/{orderId}", method= RequestMethod.POST)
+    public String editOrder(@PathVariable String userName, @PathVariable int orderId,  CustomerOrder customerOrder, BindingResult bindingResult) {
+        System.out.println("======= in editOrderPost");
+        if(bindingResult.hasErrors()){
+            return "order/addOrder";
+        }
+
+        Order order = catalogService.getOrderById(orderId);
+        order.getProductOrderList().clear();
+
+        saveOrderItems(order, customerOrder);
+
+        System.out.println("======= after edit");
+
+
+        return "redirect:/user/listOrders.html";
+    }
+
+    @RequestMapping(value="/{userName}/viewOrder/{orderId}", method= RequestMethod.GET)
+    public String viewOrder(@PathVariable String userName, @PathVariable int orderId,  Model model) {
+        System.out.println("======= in editOrder");
+        Order order = catalogService.getOrderById(orderId);
+        CustomerOrder customerOrder = new CustomerOrder();
+        customerOrder.setOrder(order);
+        customerOrder.setProductOrderList(order.getProductOrderList());
+
+        model.addAttribute("customerOrder", customerOrder);
+        System.out.println("======= before return");
+
+
+        return "order/viewOrder";
+    }
+
+    private void saveOrderItems(Order order, CustomerOrder customerOrder) {
+
+        int orderTotal = 0;
         for (ProductOrder productOrder : customerOrder.getProductOrderList()) {
             if (productOrder.getOrderAmount() > 0) {
                 System.out.println("Adding Product Id: " + productOrder.getProduct().getProductId() + " Quantity: " + productOrder.getOrderAmount());
@@ -82,11 +157,11 @@ public class UserController {
         order.setTotalAmount(orderTotal);
         if (customerOrder.isCompletedOrder()) {
             order.setConfirmNumber(Math.round(Math.random()*100000));
+        } else {
+            order.setConfirmNumber(0L);
         }
+        System.out.println("Order Conf Number " + order.getConfirmNumber());
         order = catalogService.addOrder(order);
-        System.out.println("======= after add");
 
-
-        return "redirect:/user/listOrders.html";
     }
 }

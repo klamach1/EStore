@@ -12,4 +12,6 @@ public interface OrderDao {
 
     Order saveAndFlush(Order order);
 
+    Order findOrderByOrderId(int orderId);
+
 }
